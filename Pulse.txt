@@ -1,5 +1,5 @@
 
-"id"	"name"	"height"	"weight"	"age"	"gender"	"smokes"	"alcohol"	"exercise"	"ran"	"pulse1"	"pulse2"	"year"
+"id"	"name"	"height"	"weight"	"age"	"gender"	"smokes"	"alcohol"	"exercise"	"ran"	"pulse1"	"pulse2"  "year"
 "1993_A"	"Bonnie"	"173"	"57"	"18"	"female"	"no"	"yes"	"moderate"	"sat"	"86"	"88"	"1993"
 "1993_B"	"Melanie"	"179"	"58"	"19"	"female"	"no"	"yes"	"moderate"	"ran"	"82"	"150"	"1993"
 "1993_C"	"Consuelo"	"167"	"62"	"18"	"female"	"no"	"yes"	"high"	"ran"	"96"	"176"	"1993"
@@ -109,4 +109,5 @@
 "1998_O"	"Bettie"	"161"	"43"	"19"	"female"	"no"	"no"	"low"	"sat"	"90"	"89"	"1998"
 "1998_P"	"Chris"	"182"	"60"	"22"	"male"	"no"	"yes"	"low"	"sat"	"86"	"84"	"1998"
 "1998_Q"	"Lewis"	"170"	"65"	"18"	"male"	"no"	"yes"	"high"	"sat"	"69"	"64"	"1998"
-"1998_R"	"Gene"	"185"	"85"	"19"	"male"	"no"	"yes"	"moderate"	"sat"	"75"	"68"	"1998"              H
+"1998_R"	"Gene"	"185"	"85"	"19"	"male"	"no"	"yes"	"moderate"	"sat"	"75"	"68"	"1998"
+��������������H
