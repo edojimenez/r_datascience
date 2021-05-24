@@ -1,0 +1,198 @@
+---
+title: ' Clase 8: Introducción a ggplot  ' 
+output:
+  html_document:
+    df_print: paged
+---
+
+## Preguntas para comenzar
+
+[DEMOSLE CLICK A ESTE LINK PARA COMENZAR](https://forms.gle/SM9ffTiuzTNsxvet5)
+
+```{r, message=FALSE}
+library(dplyr)     # 
+library(ggplot2)   #
+library(gganimate) #
+library(gapminder) #
+library(ggthemes)  #
+library(plotly)    #
+head(gapminder)
+```
+## Primera Parte: Inspección de la Base de datos
+
+
+```{r}
+head(gapminder)
+dim(gapminder)
+```
+
+
+```{r}
+str(gapminder)
+```
+
+
+## Análisis Gráfico exploratorio
+
+**Histograma**
+```{r}
+ggplot(data = gapminder, aes(x = lifeExp))
+```
+```{r}
+ggplot(data = gapminder, aes(x = lifeExp)) +   
+  geom_histogram()
+```
+
+_Tarea_: Hacer el histograma del gdpPercap per capita en vez de la esperanza de vida. (#gdpPercap)
+```{r, error = TRUE}
+
+```
+
+Calculemos la experanza de vida promedio por continente 
+```{r}
+gapminder %>% group_by(continent) %>%  summarise(promedio=mean(lifeExp))
+```
+
+Ahora, haremos un gráfico sobre la tabla que construimos en el paso anterior
+```{r}
+gapminder %>% group_by(continent) %>%  summarise(promedio=mean(lifeExp)) %>% ggplot(aes(x=continent, y=promedio)) + geom_bar(stat='identity')
+
+```
+
+Ahora le vamos agregar título y fondo blanco
+
+
+```{r}
+gapminder %>% group_by(continent) %>%  summarise(promedio=mean(lifeExp)) %>% ggplot(aes(x=continent, y=promedio)) + geom_bar(stat='identity') + ggtitle("Esperanza de vida por Continente" ) + theme_bw()
+```
+
+¿Qué tal si trabajaramos en the Economomist?
+
+```{r}
+gapminder %>% group_by(continent) %>%  summarise(promedio=mean(lifeExp)) %>% ggplot(aes(x=continent, y=promedio)) + geom_bar(stat='identity') + ggtitle("Esperanza de vida por Continente" ) + 
+theme_economist() + scale_colour_economist() 
+```
+
+Probemos un recurso muy importante, agreguemos colores para hacer más fácil de entender el gráfico.
+
+```{r}
+gapminder %>% group_by(continent) %>%  summarise(promedio=mean(lifeExp)) %>% ggplot(aes(x=continent, y=promedio, fill=continent)) + geom_bar(stat='identity') + ggtitle("Esperanza de vida por Continente" )  + theme_clean()
+```
+
+Probemos con el siguiente codigo: 
+``jCountries <- c("Canada", "Rwanda", "Cambodia", "Mexico")
+
+ggplot(subset(gapminder, country %in% jCountries),
+
+aes(x = year, y = lifeExp, color = country)) + geom_line() + geom_point()``
+
+_*Podemos hacerlo con dplyr en un solo paso?*_
+
+Tarea:
+Hacer un gráfico de líneas
+```{r, error= TRUE}
+gapminder %>%  filter(country, ("Canada", "Rwanda", "Cambodia", "Mexico"))  %>% 
+```
+
+¿Cuál es la diferencia entre == y %in%?
+
+
+``%in%`` busca coincidencia de valores.
+
+``==`` es un operador lógico destinado a comparar si dos cosas son exactamente iguales. 
+
+_Pongo las definiciones en inglés porque considero que es más claro_
+
+``%in%`` is value matching and "returns a vector of the positions of (first) matches of its first argument in its second" (See help('%in%')) This means you could compare vectors of different lengths to see if elements of one vector match at least one element in another. The length of output will be equal to the length of the vector being compared (the first one).
+
+``==`` is logical operator meant to compare if two things are exactly equal. If the vectors are of equal length, elements will be compared element-wise. If not, vectors will be recycled. The length of output will be equal to the length of the longer vector.
+
+
+Podemos hacer tambien un gráfico de puntos, pero solo del año 2007
+
+```{r}
+gapminder %>%  filter(year==2007) %>%  ggplot(aes(x=gdpPercap, y=lifeExp)) +
+  geom_point()
+```
+
+```{r}
+gapminder %>%  filter(year==2007) %>%  ggplot(aes(x=gdpPercap, y=lifeExp)) +
+  geom_point(aes(size=pop))
+```
+```{r}
+gapminder %>%  filter(year==2007) %>%  ggplot(aes(x=gdpPercap, y=lifeExp)) +
+  geom_point(aes(size=pop, color=continent))
+```
+```{r}
+gapminder %>%  filter(year==2007) %>%  ggplot(aes(x=gdpPercap, y=lifeExp)) +
+  geom_point(aes(size=pop, color=continent)) + 
+  ggtitle('Relación entre esperanza de vida y GDP per capita') +
+  xlab('GDP per capita ($/año)') +
+  ylab('Esperanza de vida (años)')
+```
+
+#### UNA SOPRESA ANTES DE IR A LA SEGUNDA PARTE
+
+```{r}
+ggplotly(gapminder %>%  filter(year==2007) %>%  ggplot(aes(x=gdpPercap, y=lifeExp)) +
+  geom_point(aes(size=pop, color=country)) + 
+  ggtitle('Relación entre esperanza de vida y GDP per capita') +
+  xlab('GDP per capita ($/año)') +
+  ylab('Esperanza de vida (años)'))
+```
+
+```{r}
+ggplot(
+  gapminder, 
+  aes(x = gdpPercap, y=lifeExp, size = pop, colour = country)
+  ) +
+  geom_point(show.legend = FALSE, alpha = 0.7) +
+  scale_color_viridis_d() +
+  scale_size(range = c(2, 12)) +
+  scale_x_log10() +
+  labs(x = "GDP per capita", y = "Life expectancy")
+```
+
+
+
+
+```{r}
+ggplot(
+  gapminder, 
+  aes(x = gdpPercap, y=lifeExp, size = pop, colour = country)
+  ) +
+  geom_point(show.legend = FALSE, alpha = 0.7) +
+  scale_color_viridis_d() +
+  scale_size(range = c(2, 12)) +
+  scale_x_log10() +
+  labs(x = "GDP per capita", y = "Life expectancy") + transition_time(year) +
+  labs(title = "Year: {frame_time}")
+```
+
+
+```{r}
+ggplotly(ggplot(
+  gapminder, 
+  aes(x = gdpPercap, y=lifeExp, size = pop, colour = country)
+  ) +
+  geom_point(show.legend = FALSE, alpha = 0.7) +
+  scale_color_viridis_d() +
+  scale_size(range = c(2, 12)) +
+  scale_x_log10() +
+  labs(x = "GDP per capita", y = "Life expectancy") )
+```
+
+```{r}
+ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
+  geom_point(alpha = 0.7, show.legend = FALSE) +
+  scale_colour_manual(values = country_colors) +
+  scale_size(range = c(2, 12)) +
+  scale_x_log10() +
+  facet_wrap(~continent) +
+  # Here comes the gganimate specific bits
+  labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'life expectancy') +
+  transition_time(year) +
+  ease_aes('linear')
+```
+
+[Si quieres saber más -> Chapter 10 Customizing Graphs](https://rkabacoff.github.io/datavis/Customizing.html)
